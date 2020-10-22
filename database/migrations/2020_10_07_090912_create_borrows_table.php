@@ -18,10 +18,9 @@ class CreateBorrowsTable extends Migration
             $table->unsignedBigInteger('borr_id')->autoIncrement();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
-            $table->integer('borr_status');
-            $table->dateTime('borr_from_date');
-            $table->dateTime('borr_to_date');
-            $table->dateTime('borr_return_date');
+            $table->integer('borr_status')->default(0);
+            $table->dateTime('borrow_date');
+            $table->dateTime('return_date');
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('book_id')->references('book_id')->on('books');
             $table->timestamps();

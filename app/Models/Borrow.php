@@ -13,19 +13,20 @@ class Borrow extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
+        'user_id',
+        'book_id',
         'borr_status',
-        'borr_from_date',
-        'borr_to_date',
-        'borr_return_date',
+        'borrow_date',
+        'return_date',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function book()
     {
-        return $this->belongsTo(Book::class);
+        return $this->belongsTo(Book::class, 'book_id');
     }
 }

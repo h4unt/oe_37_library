@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateBookRequest;
+use App\Http\Requests\BorrowRequest;
 use App\Repositories\RepositoryInterface\BookRepositoryInterface;
 use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
 use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
 use App\Repositories\RepositoryInterface\BaseRepositoryInterface;
+use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
+use Auth;
 
 class BookController extends Controller
 {
@@ -15,17 +18,20 @@ class BookController extends Controller
     protected $category;
     protected $publisher;
     protected $author;
+    protected $borrow;
 
     public function __construct(
         BookRepositoryInterface $book, 
         CategoryRepositoryInterface $category, 
         PublisherRepositoryInterface $publisher, 
-        BaseRepositoryInterface $author
+        BaseRepositoryInterface $author,
+        BorrowRepositoryInterface $borrow
     ){
         $this->book = $book;
         $this->category = $category;
         $this->publisher = $publisher;
         $this->author = $author;
+        $this->borrow = $borrow;
     }
 
     /**
@@ -129,5 +135,21 @@ class BookController extends Controller
             return redirect()->route('admin.books.index')->with('message', ['msg' => trans('admin.book.delete_error'), 'status' => 'danger']);
         }
         return redirect()->back()->with('message', ['msg' => trans('admin.book.delete_success'), 'status' => 'success']);
+    }
+
+    public function borrow(BorrowRequest $request, $id){
+        $book = $this->book->find($id);
+        $request->merge([
+            'book_id' => $id,
+            'user_id' => Auth::id(),
+        ]);
+        if(!$book)
+            return abort(404);
+        elseif ($book->quantity < 1) 
+            return redirect()->route('admin.books.index')->with('message', ['msg' => trans('main.book.not_enough_quantity'), 'status' => 'danger']);
+        elseif ($this->borrow->create($request->all()))
+            return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_success'), 'status' => 'success']);
+   
+        return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_error'), 'status' => 'danger']);
     }
 }

@@ -45,3 +45,4 @@ Route::name('admin.')
 });
 
 Route::get('book/detail/{id}', 'BookController@show')->name('book.detail');
+Route::post('book/borrow/{id}', 'BookController@borrow')->name('book.borrow')->middleware('auth');

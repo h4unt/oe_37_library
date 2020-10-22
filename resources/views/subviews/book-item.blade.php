@@ -2,7 +2,7 @@
     <div class="card mb-3">
         <div class="row no-gutters">
             <div class="col-md-4">
-                @if(file_exists( public_path().'/images/books/'.$book->book_image ))
+                @if(file_exists( public_path().'/images/books/'.$book->book_image ) && $book->book_image != null)
                     <img src="images/books/{{ $book->book_image }}" class="img-thumbnail p-0 border-0 rounded-0">
                 @else
                     <img src="image/library.png" class="img-thumbnail p-0 border-0 rounded-0">
