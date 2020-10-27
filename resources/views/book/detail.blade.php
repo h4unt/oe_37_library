@@ -52,9 +52,13 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <a href="#" class="btn btn-block btn-outline-dark">
-                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
-                        </a>
+                        <button type="button" data-id="{{ $book->book_id }}" class="likebtn btn btn-block btn-outline-dark">
+                            @if(!$liked)
+                                <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
+                            @else
+                                <i class="fa fa-thumbs-down" aria-hidden="true"></i> @lang('main.book.unlike_book')
+                            @endif
+                        </button>
                     </div>
                     <div class="col-md-6 mb-2">
                         <button type="button" class="btn btn-block btn-dark" data-toggle="modal" data-target="#borrowForm" @if($book->quantity == 0) disabled @endif>

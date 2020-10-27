@@ -10,6 +10,7 @@ use App\Repositories\RepositoryInterface\CategoryRepositoryInterface;
 use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
 use App\Repositories\RepositoryInterface\BaseRepositoryInterface;
 use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
+use App\Repositories\RepositoryInterface\LikeRepositoryInterface;
 use Auth;
 
 class BookController extends Controller
@@ -19,19 +20,22 @@ class BookController extends Controller
     protected $publisher;
     protected $author;
     protected $borrow;
+    protected $like;
 
     public function __construct(
         BookRepositoryInterface $book, 
         CategoryRepositoryInterface $category, 
         PublisherRepositoryInterface $publisher, 
         BaseRepositoryInterface $author,
-        BorrowRepositoryInterface $borrow
+        BorrowRepositoryInterface $borrow,
+        likeRepositoryInterface $like
     ){
         $this->book = $book;
         $this->category = $category;
         $this->publisher = $publisher;
         $this->author = $author;
         $this->borrow = $borrow;
+        $this->like = $like;
     }
 
     /**
@@ -87,8 +91,9 @@ class BookController extends Controller
             return abort(404);
         else
             $this->book->viewCounter($id);
+        $liked = $this->like->findExist(Auth::id(), $id);
 
-        return view('book.detail', compact('book'));
+        return view('book.detail', compact('book', 'liked'));
     }
 
     /**
@@ -151,5 +156,40 @@ class BookController extends Controller
             return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_success'), 'status' => 'success']);
    
         return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_error'), 'status' => 'danger']);
+    }
+
+    public function like(Request $request){
+        $book = $this->book->find($request->book_id);
+        if (!Auth::check())
+            return response()->json([
+                'msg' => trans('main.login_msg'),
+                'status' => 'warning',
+            ]);
+        elseif($book) { // book exist
+            if (!$this->like->findExist(Auth::id(), $request->book_id)) { // like
+                $this->like->create([
+                    'book_id' => $request->book_id,
+                    'user_id' => Auth::id()
+                ]);
+
+                return response()->json([
+                    'msg' => 'Đã thêm vào danh sách yêu thích',
+                    'btn_content' => '<i class="fa fa-thumbs-down" aria-hidden="true"></i> '. trans('main.book.unlike_book'),
+                    'status' => 'success',
+                ]);
+            }else{ // unlike
+                $this->like->unlike(Auth::id(),$request->book_id);
+
+                return response()->json([
+                    'msg' => 'Đã xoá khỏi sách yêu thích',
+                    'btn_content' => '<i class="fa fa-thumbs-up" aria-hidden="true"></i> '. trans('main.book.like_book'),
+                    'status' => 'success',
+                ]);
+            }
+        } else
+            return response()->json([
+                'msg' => trans('main.book.not_exist'),
+                'status' => 'error',
+            ]);        
     }
 }

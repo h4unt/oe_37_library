@@ -7,6 +7,7 @@ return [
     'home' => 'Trang chủ',
     'categories' => 'Danh mục',
     'login' => 'Đăng nhập',
+    'login_msg' => 'Vui lòng đăng nhập',
     'locate_vi' => 'Tiếng Việt',
     'locate_en' => 'English',
     'latest_books' => 'Sách mới',
@@ -18,6 +19,7 @@ return [
         'view_book' => 'Chi tiết',
         'borrow_book' => 'Mượn sách',
         'like_book' => 'Thích',
+        'unlike_book' => 'Bỏ thích',
         'review' => 'Đánh giá',
         'view' => 'Lượt xem',
         'category' => 'Danh mục',
@@ -29,6 +31,7 @@ return [
         'choose_rating' => 'Chọn mức đánh giá',
         'send_review' => 'Gửi đánh giá',
         'not_enough_quantity' => 'Số lượng sách không đủ để mượn',
+        'not_exist' => 'Sách này không tồn tại',
         'borrow' => [
             'date_borrow' => 'Ngày mượn',
             'date_return' => 'Ngày trả',

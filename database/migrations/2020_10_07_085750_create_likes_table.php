@@ -15,6 +15,7 @@ class CreateLikesTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('likes', function (Blueprint $table) {
+            $table->unsignedBigInteger('like_id')->autoIncrement();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
             $table->foreign('user_id')->references('user_id')->on('users');

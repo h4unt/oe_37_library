@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class Book extends Model
 {
@@ -44,9 +45,9 @@ class Book extends Model
         return $this->hasMany(Borrow::class);
     }
 
-    public function likes()
+    public function liked()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class, 'book_id')->where('likes.user_id', '=', Auth::id());
     }
 
     public function reviews()
