@@ -22,7 +22,7 @@ class Category extends Model
 
     public function books()
     {
-        return $this->hasMany(Book::class);
+        return $this->hasMany(Book::class, 'cate_id');
     }
 
     public function children()

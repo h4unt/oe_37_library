@@ -65,6 +65,7 @@ return [
     ],
     'hello' => 'Xin chào',
     'my_account' => 'Tài khoản của tôi',
+    'no_result' => 'Không tìm thấy',
     'validate' => [
         'borrow_date_required' => 'Hãy chọn ngày bắt đầu mượn sách',
         'return_date_required' => 'Hãy chọn ngày trả lại sách',

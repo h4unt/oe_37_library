@@ -20,6 +20,10 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+Route::get('category', 'BookController@showAllBook')->name('category.all');
+Route::get('category/{id}', 'BookController@showByCategory')->name('category');
+
+
 Route::name('admin.')
     ->prefix('admin')
     ->middleware(['auth', 'can:accessAdmin'])
@@ -30,7 +34,7 @@ Route::name('admin.')
         'authors' => 'AuthorController',
         'publishers' => 'PublisherController',
         'books' => 'BookController',
-        'reviews' => 'ReviewController',
+        
     ]);
     
     Route::resource('categories', 'CategoryController', ['except' => [
@@ -43,7 +47,7 @@ Route::name('admin.')
     Route::get('authors-export', 'AuthorController@export')->name('authors.export');
     Route::get('users-export', 'UserController@export')->name('users.export');
 });
-Route::post('reviews', 'ReviewController@store')->name('reviews.store');
+Route::resource('reviews', 'ReviewController');
 Route::get('book/detail/{id}', 'BookController@show')->name('book.detail');
 Route::post('book/like', 'BookController@like')->name('book.like');
 Route::post('book/borrow/{id}', 'BookController@borrow')->name('book.borrow')->middleware('auth');
