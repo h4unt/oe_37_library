@@ -10,12 +10,14 @@ class Like extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+    protected $primaryKey = 'like_id';
 
     protected $fillable = [
-        'liked_date',
+        'book_id',
+        'user_id',
     ];
 
-    public function book()
+    public function Book()
     {
         return $this->belongsTo(Book::class);
     }

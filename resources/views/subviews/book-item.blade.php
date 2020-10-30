@@ -14,7 +14,7 @@
                     <p class="card-text">{{ str_limit($book->book_desc, 120) }}</p>
                     <div class="card-text">
                         <div class="star-ratings d-inline-block">
-                            <div class="fill-ratings" style="width: 85%;">
+                            <div class="fill-ratings" style="width: {{ optional($book->agvReview->first())->star * 20 }}%;">
                                 <span>★★★★★</span>
                             </div>
                             <div class="empty-ratings">
@@ -24,9 +24,13 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6 prod-price mb-2">
-                            <a href="{{ route('book.detail', $book->book_id) }}" class="btn btn-block btn-outline-dark">
-                                <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
-                            </a>
+                            <button type="button" data-id="{{ $book->book_id }}" class="likebtn btn btn-block btn-outline-dark">    
+                                @if ($book->liked->first())
+                                    <i class="fa fa-thumbs-down" aria-hidden="true"></i> @lang('main.book.unlike_book')
+                                @else
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
+                                @endif
+                            </button>
                         </div>
                         <div class="col-md-6">
                             <a href="{{ route('book.detail', $book->book_id) }}" class="btn btn-block btn-outline-dark">

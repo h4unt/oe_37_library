@@ -37,7 +37,7 @@
                 <div class="card-text">
                     <b>@lang('main.book.rating'): </b>
                     <div class="star-ratings d-inline-block">
-                        <div class="fill-ratings" style="width: 85%;">
+                        <div class="fill-ratings" style="width: {{ optional($book->agvReview->first())->star * 20 }}%;">
                             <span>★★★★★</span>
                         </div>
                         <div class="empty-ratings">
@@ -55,9 +55,13 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <a href="#" class="btn btn-block btn-outline-dark">
-                            <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
-                        </a>
+                        <button type="button" data-id="{{ $book->book_id }}" class="likebtn btn btn-block btn-outline-dark">
+                            @if(!$liked)
+                                <i class="fa fa-thumbs-up" aria-hidden="true"></i> @lang('main.book.like_book')
+                            @else
+                                <i class="fa fa-thumbs-down" aria-hidden="true"></i> @lang('main.book.unlike_book')
+                            @endif
+                        </button>
                     </div>
                     <div class="col-md-6 mb-2">
                         <button type="button" class="btn btn-block btn-dark" data-toggle="modal"
@@ -98,7 +102,6 @@
                     @endforeach
                 @endif
             </form>
-            <hr>
         @else 
             <p class="alert alert-danger">@lang('main.book.notLogin')</p>
         @endif

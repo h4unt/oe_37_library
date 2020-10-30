@@ -45,6 +45,7 @@ Route::name('admin.')
 });
 Route::post('reviews', 'ReviewController@store')->name('reviews.store');
 Route::get('book/detail/{id}', 'BookController@show')->name('book.detail');
+Route::post('book/like', 'BookController@like')->name('book.like');
 Route::post('book/borrow/{id}', 'BookController@borrow')->name('book.borrow')->middleware('auth');
 Route::get('author/detail/{id}', 'AuthorController@show')->name('authors.detail');
 Route::get('authors', 'AuthorController@showForUser')->name('authors.showAll');

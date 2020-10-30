@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Borrow;
 use App\Models\Like;
 use App\Models\Review;
+use Auth;
 
 class Book extends Model
 {
@@ -57,12 +58,18 @@ class Book extends Model
 
     public function liked()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class, 'book_id')->where('likes.user_id', '=', Auth::id());
     }
 
     public function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class, 'book_id');
+    }
+
+    public function agvReview(){
+        return $this->reviews()
+                    ->selectRaw('avg(rate) as star, book_id')
+                    ->groupBy('book_id');
     }
 
     public function scopeLastest($query)

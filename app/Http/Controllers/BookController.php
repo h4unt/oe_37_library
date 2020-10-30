@@ -11,6 +11,7 @@ use App\Repositories\RepositoryInterface\PublisherRepositoryInterface;
 use App\Repositories\RepositoryInterface\BaseRepositoryInterface;
 use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
 use App\Repositories\RepositoryInterface\ReviewRepositoryInterface;
+use App\Repositories\RepositoryInterface\LikeRepositoryInterface;
 use Auth;
 
 class BookController extends Controller
@@ -21,6 +22,7 @@ class BookController extends Controller
     protected $author;
     protected $review;
     protected $borrow;
+    protected $like;
 
     public function __construct(
         BookRepositoryInterface $book, 
@@ -28,7 +30,8 @@ class BookController extends Controller
         PublisherRepositoryInterface $publisher, 
         BaseRepositoryInterface $author,
         ReviewRepositoryInterface $review,
-        BorrowRepositoryInterface $borrow
+        BorrowRepositoryInterface $borrow,
+        likeRepositoryInterface $like
     ){
         $this->book = $book;
         $this->category = $category;
@@ -36,6 +39,7 @@ class BookController extends Controller
         $this->author = $author;
         $this->review = $review;
         $this->borrow = $borrow;
+        $this->like = $like;
     }
 
     /**
@@ -92,11 +96,10 @@ class BookController extends Controller
         } else {
             $this->book->viewCounter($id);
         }
+        $liked = $this->like->findExist(Auth::id(), $id);
         $reviews = $this->review->getWithUser($id);
-        if (is_null($reviews)) {
-            return view('book.detail', compact('book'));         
-        }
-        return view('book.detail', compact('book', 'reviews'));
+
+        return view('book.detail', compact('book', 'reviews', 'liked'));
     }
 
     /**
@@ -159,5 +162,40 @@ class BookController extends Controller
             return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_success'), 'status' => 'success']);
    
         return redirect()->back()->with('message', ['msg' => trans('main.book.borrow.borrow_error'), 'status' => 'danger']);
+    }
+
+    public function like(Request $request){
+        $book = $this->book->find($request->book_id);
+        if (!Auth::check())
+            return response()->json([
+                'msg' => trans('main.login_msg'),
+                'status' => 'warning',
+            ]);
+        elseif($book) { // book exist
+            if (!$this->like->findExist(Auth::id(), $request->book_id)) { // like
+                $this->like->create([
+                    'book_id' => $request->book_id,
+                    'user_id' => Auth::id()
+                ]);
+
+                return response()->json([
+                    'msg' => trans('main.book.like_success'),
+                    'btn_content' => '<i class="fa fa-thumbs-down" aria-hidden="true"></i> '. trans('main.book.unlike_book'),
+                    'status' => 'success',
+                ]);
+            }else{ // unlike
+                $this->like->unlike(Auth::id(),$request->book_id);
+
+                return response()->json([
+                    'msg' => trans('main.book.unlike_success'),
+                    'btn_content' => '<i class="fa fa-thumbs-up" aria-hidden="true"></i> '. trans('main.book.like_book'),
+                    'status' => 'success',
+                ]);
+            }
+        } else
+            return response()->json([
+                'msg' => trans('main.book.not_exist'),
+                'status' => 'error',
+            ]);        
     }
 }
