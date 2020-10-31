@@ -20,6 +20,9 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
+Route::get('category', 'BookController@showAllBook')->name('category.all');
+Route::get('category/{id}', 'BookController@showByCategory')->name('category');
+
 Route::name('admin.')
     ->prefix('admin')
     ->middleware(['auth', 'can:accessAdmin'])

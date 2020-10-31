@@ -198,4 +198,21 @@ class BookController extends Controller
                 'status' => 'error',
             ]);        
     }
+
+    public function showByCategory($cate_id){
+        $cate = $this->category->find($cate_id);
+        if (!$cate) {
+            return abort(404);
+        }
+        $title = $cate->cate_name;
+        $books = $this->category->getLastestBookInCategory($cate_id);
+
+        return view('book.category', compact('title', 'books'));        
+    }
+
+    public function showAllBook(){
+        $title = trans('main.categories');
+        $books = $this->book->getAll();
+        return view('book.category', compact('title', 'books'));        
+    }
 }

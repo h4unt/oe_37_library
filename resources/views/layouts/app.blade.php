@@ -24,17 +24,17 @@
               <a class="nav-link" href="{{ route('home') }}">@lang('main.home')</a>
             </li>
             <li class="nav-item droplist">
-              <a class="nav-link" href="#">@lang('main.categories')</a>
+              <a class="nav-link" href="{{ route('category.all') }}">@lang('main.categories')</a>
               <ul class="droplist-container mt-3">
                 <div class="container d-block">
                   <div class="row mt-5 mb-4 ml-0 mr-0 pd-0">
                     @foreach ($allCategory as $category)
                     <div class="col-md-4 p-0">
-                      <h2 class="droplist-title"><a href="#">{{ $category->cate_name }}</a>
+                      <h2 class="droplist-title"><a href="{{ route('category', $category->cate_id) }}">{{ $category->cate_name }}</a>
                       </h2>
                       <ul class="droplist-list">
                         @foreach ($category->children as $subCategory)
-                        <li><a href="#">{{ $subCategory->cate_name }}</a></li>
+                        <li><a href="{{ route('category', $subCategory->cate_id) }}">{{ $subCategory->cate_name }}</a></li>
                         @endforeach
                       </ul>
                     </div>

@@ -60,6 +60,7 @@ return [
     'validate_review' => 'Do not leave comments blank',
     'hello' => 'Hello',
     'my_account' => 'My account',
+    'no_result' => 'No result',
     'validate' => [
         'borrow_date_required' => 'Please select a start date to borrow',
         'return_date_required' => 'Please select a return date',
