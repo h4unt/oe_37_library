@@ -7,5 +7,5 @@ interface CategoryRepositoryInterface extends BaseRepositoryInterface
 
     public function getParent();
 
-    public function getWithKey($key);
+    public function getWithKey($key); 
 }
