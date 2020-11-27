@@ -45,6 +45,8 @@ jobs:
   stage: test
   image: sunasteriskrnd/php-workspace:7.4
   before_script:
+  - cp .env.example .env.testing
   - composer install
+  - php artisan migrate
   script:
   - php vendor/bin/phpunit

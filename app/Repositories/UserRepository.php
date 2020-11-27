@@ -49,4 +49,14 @@ class UserRepository implements UserRepositoryInterface
 
         return false;
     }
+
+    public function userCountChart(){
+        return User::all()
+                    ->groupBy(function ($user) {
+                        return $user->created_at->month;
+                    })
+                    ->map(function ($group) {
+                        return $group->count();
+                    });
+    }
 }

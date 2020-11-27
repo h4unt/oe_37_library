@@ -11,14 +11,20 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Repositories\RepositoryInterface\BorrowRepositoryInterface;
+use App\Repositories\RepositoryInterface\UserRepositoryInterface;
 
 class DashboardController extends Controller
 {
     protected $borrowRepository;
+    protected $userRepository;
 
-    public function __construct(BorrowRepositoryInterface $borrowRepository)
+    public function __construct(
+        BorrowRepositoryInterface $borrowRepository,
+        UserRepositoryInterface $userRepository
+    )
     {
         $this->borrowRepository = $borrowRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function index()
@@ -43,13 +49,7 @@ class DashboardController extends Controller
 
     public function userCountChart()
     {
-        $user_count_chart = User::all()
-            ->groupBy(function ($user) {
-                return $user->created_at->month;
-            })
-            ->map(function ($group) {
-                return $group->count();
-            });
+        $user_count_chart = $this->userRepository->userCountChart();
         $arrLabels = [];
         $arrData = [];
         foreach ($user_count_chart as $labels => $data) {
