@@ -73,7 +73,7 @@
                 @lang('main.hello'), <b>{{ Auth::user()->username }}</b>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">@lang('main.my_account')</a>
+                <a class="dropdown-item" href="{{ route('user.my-account') }}">@lang('main.my_account')</a>
                 @if(Auth::user()->can('accessAdmin', 1)) <a class="dropdown-item text-danger"
                   href="{{ route('admin.index') }}">@lang('admin.home')</a> @endif
                   <a class="dropdown-item" href="{{ route('borrows.history', Auth::user()->user_id) }}">@lang('main.borrow_history')</a>

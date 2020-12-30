@@ -94,8 +94,14 @@ class UserController extends Controller
         }
         return redirect()->back();
     }
-    public function readNoti(){
+    public function readNoti()
+    {
         Auth::user()->unreadNotifications->markAsRead();
         return response()->json(['status' => 'success']);
+    }
+
+    public function myAccount()
+    {
+        return view('user.my-account');
     }
 }

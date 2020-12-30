@@ -52,7 +52,8 @@ Route::name('user.')
     ->prefix('user')
     ->middleware(['auth'])
     ->group(function () {
-        Route::post('mark_as_read', 'UserController@readNoti')->name('users.mark_as_read_noti');
+        Route::post('mark_as_read', 'UserController@readNoti')->name('mark_as_read_noti');
+        Route::get('my-account', 'UserController@myAccount')->name('my-account');
     });
 
 Route::post('reviews', 'ReviewController@store')->name('reviews.store');

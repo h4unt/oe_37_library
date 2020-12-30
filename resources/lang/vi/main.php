@@ -88,5 +88,14 @@ return [
         'mail_end' => 'Xin cảm ơn!',
         'noti_everyday' => 'Thông báo hằng ngày',
         'noti_everyday_content' => 'Số sách chưa được mượn :',
+        'borrow_request' => 'Yêu cầu mượn sách #:id',
+        'borrow_msg' => 'Sách :name bạn mượn sắp hết hạn, thời gian còn lại là :time',
+        'borrow_msg_expired' => 'Sách :name bạn mượn đã quá hạn trả, thời gian quá hạn là :time ngày'
+    ],
+    'account' => [
+        'fullname' => 'Họ & Tên',
+        'email' => 'Email',
+        'birthday' => 'Ngày sinh',
+        'phone' => 'Số điện thoại'
     ]
 ];
